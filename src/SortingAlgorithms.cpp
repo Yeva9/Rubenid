@@ -1,25 +1,20 @@
-#include <cassert>
 #include <iostream>
 
-void BubbleSortByRubinid(int, int*);
-void SelectionSortByRubinid(int, int*);
-void InsertionSortByRubinid(int, int*);
-void HeapSortByRubinid(int, int*);
-void ShellSortByRubinid(int, int*);
-void QuickSortByRubinid(int, int*);
-void MergeSortByRubinid(int, int*);
+void BubbleSortByRubenid(int, int*);
+void SelectionSortByRubenid(int, int*);
+void InsertionSortByRubenid(int, int*);
+void HeapSortByRubenid(int, int*);
+void ShellSortByRubenid(int, int*);
+void QuickSortByRubenid(int, int*);
+void MergeSortByRubenid(int, int*);
 
+void Swap(int& a, int& b) {
+	int tmp = a;
+	a = b;
+	b = tmp;
+}	
 
-namespace 
-{	
-	void Swap(int& a, int& b) {
-		int tmp = a;
-		a = b;
-		b = tmp;
-	}	
-}
-
-void BubbleSortByRubinid(int size, int* array) {
+void BubbleSortByRubenid(int size, int* array) {
 	bool is_sorted = true;
 
 	for (int i = 0; i < size - 1; ++i) {
@@ -36,7 +31,7 @@ void BubbleSortByRubinid(int size, int* array) {
 	}
 }
 
-void SelectionSortByRubinid(int size, int* array) {
+void SelectionSortByRubenid(int size, int* array) {
 	for (int i = 0; i < size - 1; ++i) {
 		int min_index = i;
 		for (int j = i + 1; j < size; ++j) {
@@ -53,7 +48,7 @@ void SelectionSortByRubinid(int size, int* array) {
     }
 }
 
-void InsertionSortByRubinid(int size, int* array) {
+void InsertionSortByRubenid(int size, int* array) {
 	for (int i = 1; i < size; ++i) {
 		int tmp = array[i], j = i - 1;
 
@@ -66,9 +61,7 @@ void InsertionSortByRubinid(int size, int* array) {
 	}
 }
 
-namespace 
-{
-	int Partitioning(int* array, int start, int end) {
+int Partitioning(int* array, int start, int end) {
 		int pivot = end; 	 
 		int pindex = start;  // index for partitioning
 
@@ -94,14 +87,13 @@ namespace
     	QuickSortHelper(array, start, pivot - 1);
 	    QuickSortHelper(array, pivot + 1, end);
     }
-}
 
-void QuickSortByRubinid(int size, int* array) {   
+
+void QuickSortByRubenid(int size, int* array) {   
     QuickSortHelper(array, 0, size - 1);
 }
 
-namespace
-{	
+
 	void Merge(int* array, int start, int middle, int end) {
 		int i = start; 			 // initial index of first subarray
 		int j = middle + 1;		 // initial index of second subarray
@@ -136,14 +128,12 @@ namespace
 	    MergeSortHelper(array, middle + 1, end);
 	    Merge(array, start, middle, end);
     }
-}
 
-void MergeSortByRubinid(int size, int* array) {
+
+void MergeSortByRubenid(int size, int* array) {
     MergeSortHelper(array, 0, size - 1);
 }
 
-namespace 
-{
 	void Heapify(int* array, int size, int root) {
     	int max = root;
     	int right = (2 * root) + 1;
@@ -162,9 +152,9 @@ namespace
     	    Heapify(array, size, max);              
     	}
 	}
-}
 
-void HeapSortByRubinid(int size, int* array) {
+
+void HeapSortByRubenid(int size, int* array) {
     for (int i = (size / 2) - 1; i >= 0; --i) {
         Heapify(array, size, i);        
     }
@@ -175,7 +165,7 @@ void HeapSortByRubinid(int size, int* array) {
     }
 }
 
-void ShellSortByRubinid(int size, int* array) {
+void ShellSortByRubenid(int size, int* array) {
 	for (int gap = size / 2; gap > 0; gap /= 2) {
 		for (int i = gap; i < size; ++i ) {
 			for (int j = i - gap; j >= 0; j -= gap) {
