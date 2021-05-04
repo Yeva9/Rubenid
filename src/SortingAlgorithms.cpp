@@ -76,7 +76,6 @@ void QuickSortHelper(int* array, int start, int end) {
         }    
 }
 
-
 void QuickSortByRubenid(int size, int* array) {   
     QuickSortHelper(array, 0, size - 1);
 }
@@ -107,7 +106,6 @@ void QuickSortByRubenid(int size, int* array) {
             ++k;
         }
     }
-
 
 void Merge(int* array, int start, int middle, int end) {
 	int n1 = middle - start + 1;
