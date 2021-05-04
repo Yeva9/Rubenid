@@ -15,118 +15,123 @@ void Swap(int& a, int& b) {
 }	
 
 void BubbleSortByRubenid(int size, int* array) {
-	bool is_sorted = true;
-
-	for (int i = 0; i < size - 1; ++i) {
-		for (int j = 0; j < size - i - 1; ++j) {
-			if (array[j] > array[j + 1]) {
-				is_sorted = false;
-				Swap(array[j],array[j + 1]);
-			}
-		}
-
-		if (is_sorted) {
-			return;
-		}
-	}
+ for(int i = 0; i < size; ++i) {
+            bool swap = false;
+            for(int j = 0; j < size - i - 1; ++j) {
+                if(array[j] > array[j + 1]) {
+                    Swap(array[j + 1], array[j]);
+                    swap = true;
+                }
+            }
+            if(swap == false) {
+                break;
+            }
+        }
 }
 
 void SelectionSortByRubenid(int size, int* array) {
-	for (int i = 0; i < size - 1; ++i) {
-		int min_index = i;
-		for (int j = i + 1; j < size; ++j) {
-			if (array[j] < array[min_index]) {
-				min_index = j;
-			}
-		}
-
-		//if it is not the same element
-        if (i != min_index) {
-            // Swap the found min element with the first element
-		    Swap(array[min_index],array[i]);
-	    }
+	for(int i = 0; i < size; ++i) {
+            int min_value_index = i;
+            for(int j = i; j < size; ++j) {
+                if(array[j] < array[min_value_index]) {
+                    min_value_index = j;
+                }
+            }
+            Swap(array[i], array[min_value_index]);
+        }
     }
-}
+
 
 void InsertionSortByRubenid(int size, int* array) {
-	for (int i = 1; i < size; ++i) {
-		int tmp = array[i], j = i - 1;
-
-		while (j >= 0 && array[j] > tmp) {
-			array[j + 1] = array[j];
-			--j;
-		}
-
-		array[j + 1] = tmp;
-	}
+	for(int i = 1; i < size; ++i) {
+            int key = array[i];
+            int j = i - 1;
+            while(j >= 0 && array[j] > key) {
+                array[j + 1] = array[j];
+                --j;
+            }
+            array[j + 1] = key;
+        }
 }
 
+
 int Partitioning(int* array, int start, int end) {
-		int pivot = end; 	 
-		int pindex = start;  // index for partitioning
+	int  pivot = array[end];
+        int i = start - 1;
+        for(int j = start; j <= end; ++j) {
+            if(array[j] < pivot) {
+                ++i;
+                Swap(array[i], array[j]);
+            }
+        }
+        Swap(array[i + 1], array[end]);
+        return i + 1;
+}
 
-		for (int i = start; i < end; ++i) {
-			if (array[i] < array[pivot]) {
-				Swap(array[pindex], array[i]);
-				++pindex;
-			}
-		}
-
-		Swap(array[pindex],array[pivot]);
-
-		return pindex;
-	}
-
-    void QuickSortHelper(int* array, int start, int end) {
-    	if (start >= end) {
-	    	return;
-	    }
-
-	    int pivot = Partitioning(array, start, end); 
-
-    	QuickSortHelper(array, start, pivot - 1);
-	    QuickSortHelper(array, pivot + 1, end);
-    }
+void QuickSortHelper(int* array, int start, int end) {
+	if(start <= end) {
+            int position = Partitioning(array, start, end);
+            Partitioning(array, start, position - 1);
+            Partitioning(array, position + 1, end);
+        }    
+}
 
 
 void QuickSortByRubenid(int size, int* array) {   
     QuickSortHelper(array, 0, size - 1);
 }
 
+ void MergeHelper(int* array, int* array1, int* array2, int n1, int n2, int start)
+    {
+        int i = 0;
+        int j = 0;
+        int k = start;
+        while(i < n1 && j < n2) {
+            if(array1[i] <= array2[j]) {
+                array[k] = array1[i];
+                ++i;
+            } else {
+                array[k] = array2[j];
+                ++j;
+            }
+            ++k;
+        }
+        while(i < n1) {
+            array[k] = array1[i];
+            ++i;
+            ++k;
+        }
+        while(j < n2) {
+            array[k] = array2[j];
+            ++j;
+            ++k;
+        }
+    }
 
-	void Merge(int* array, int start, int middle, int end) {
-		int i = start; 			 // initial index of first subarray
-		int j = middle + 1;		 // initial index of second subarray
-		int l = end - start + 1; // size of temp array
 
-		int* tmp = new int[l];
-
-		for (int k = 0; k < l; ++k) {
-			if ((i <= middle && array[i] < array[j]) || j > end) {
-				tmp[k] = array[i];
-				++i;
-			} else {
-				tmp[k] = array[j];
-				++j;
-			}
-		}
-
-		for (int k = 0, p = start; k < l; ++k, ++p) {
-			array[p] = tmp[k];
-		}
-		delete[] tmp;
+void Merge(int* array, int start, int middle, int end) {
+	int n1 = middle - start + 1;
+        int n2 = end - middle;
+        int* array1 = new int[n1];
+        int* array2 = new int[n2];
+        for(int i = 0; i < n1; ++i) {
+            array1[i] = array[start + i];
+        }
+        for(int j = 0; j < n2; ++j) {
+            array2[j] = array[middle + 1 + j];
+        }
+        MergeHelper(array, array1, array2, n1, n2, start);
+        delete [] array1;
+        delete [] array2;	
     }
     
-    void MergeSortHelper(int* array, int start, int end) {
-	    if (start >= end) {
-		    return;
-	    }
-
-	    int middle = (start + end) / 2;
-
-	    MergeSortHelper(array, start, middle);
-	    MergeSortHelper(array, middle + 1, end);
-	    Merge(array, start, middle, end);
+void MergeSortHelper(int* array, int start, int end) {
+	if(start < end) {
+            int mid = start + (end - start) / 2;
+            MergeSortHelper(array, start, mid);
+            MergeSortHelper(array, mid + 1, end);
+            Merge(array, start, mid, end);
+        }
     }
 
 
@@ -134,49 +139,45 @@ void MergeSortByRubenid(int size, int* array) {
     MergeSortHelper(array, 0, size - 1);
 }
 
-	void Heapify(int* array, int size, int root) {
-    	int max = root;
-    	int right = (2 * root) + 1;
-    	int left = (2 * root) + 2;
 
-    	if (left < size && array[left] > array[max]) {
-    	    max = left;
-    	}
-    
-    	if (right < size && array[right] > array[max]) {
-    	    max = right;
-    	}
-
-    	if (max != root) {
-    	    Swap(array[root], array[max]);
-    	    Heapify(array, size, max);              
-    	}
+void Heapify(int* array, int size, int root) {
+	int largest = root;
+        int left = 2 * root + 1;
+        int right = 2 * root + 2;
+        if(left < size && array[left] > array[largest]) {
+            largest = left;
+        }
+        if(right < size && array[right] > array[largest]) {
+            largest = right;
+        }
+        if(largest != root) {
+            Swap(array[largest], array[root]);
+            Heapify(array, size, largest);
+        }
 	}
 
 
 void HeapSortByRubenid(int size, int* array) {
-    for (int i = (size / 2) - 1; i >= 0; --i) {
-        Heapify(array, size, i);        
-    }
-
-    for (int i = size - 1; i >= 0; --i) {
-        Swap(array[i], array[0]);
-        Heapify(array, i, 0);
-    }
+       for(int i = size / 2 - 1; i >= 0; --i) {
+            Heapify(array, size, i);
+        }
+        for(int i = size - 1; i >= 0; --i) {
+            Swap(array[0], array[i]);
+            Heapify(array, i, 0);
+        }
 }
 
 void ShellSortByRubenid(int size, int* array) {
-	for (int gap = size / 2; gap > 0; gap /= 2) {
-		for (int i = gap; i < size; ++i ) {
-			for (int j = i - gap; j >= 0; j -= gap) {
-				if (array[j + gap] >= array[j]) {
-					break;
-				} else {
-					Swap(array[j + gap], array[j]);
-				}			
-			}
-		}	
-	}
+for(int interval = size / 2; interval > 0; interval /= 2) {
+            for(int i = interval; i < size; ++i) {
+                int temp = array[i];
+                int j;
+                for(j = i; j >= interval && array[j - interval] > temp; j -= interval) {
+                    array[j] = array[j - interval];
+                }
+                array[j] = temp;
+            }
+        }	
 }
 
 
